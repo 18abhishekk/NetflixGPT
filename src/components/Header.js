@@ -7,6 +7,7 @@ import { removeUser, addUser } from "../utils/userSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { NETFLIX_LOGO } from "../utils/constants";
 import { toggleGptSearchView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,7 +23,9 @@ const Header = () => {
         navigate("/error");
       });
   };
-
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
   const handleGptSearchClick = () => {
     dispatch(toggleGptSearchView());
   };
@@ -54,7 +57,10 @@ const Header = () => {
       {user && (
         <div className="flex p-2">
           {showGptSearch && (
-            <select className="p-2 bg-gray-900 text-white">
+            <select
+              className="p-2 bg-gray-900 text-white"
+              onChange={handleLanguageChange}
+            >
               <option value="en">English</option>
               <option value="hindi">Hindi</option>
               <option value="spanish">Spanish</option>
@@ -64,7 +70,7 @@ const Header = () => {
             className="py-2 mx-4 my-2 w-24 bg-purple-800 text-white rounded-lg"
             onClick={handleGptSearchClick}
           >
-            GPT Search
+            {showGptSearch ? "Home Page" : "GPT Search"}
           </button>
           <img
             className="w-12 h-12"
