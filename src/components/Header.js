@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeUser, addUser } from "../utils/userSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { NETFLIX_LOGO } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -21,6 +23,9 @@ const Header = () => {
       });
   };
 
+  const handleGptSearchClick = () => {
+    dispatch(toggleGptSearchView());
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -48,6 +53,19 @@ const Header = () => {
       <img className="w-44" src={NETFLIX_LOGO} alt="logo" />
       {user && (
         <div className="flex p-2">
+          {showGptSearch && (
+            <select className="p-2 bg-gray-900 text-white">
+              <option value="en">English</option>
+              <option value="hindi">Hindi</option>
+              <option value="spanish">Spanish</option>
+            </select>
+          )}
+          <button
+            className="py-2 mx-4 my-2 w-24 bg-purple-800 text-white rounded-lg"
+            onClick={handleGptSearchClick}
+          >
+            GPT Search
+          </button>
           <img
             className="w-12 h-12"
             src={user.photoURL}
