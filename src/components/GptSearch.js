@@ -5,7 +5,7 @@ import { HEADER_BG } from "../utils/constants";
 const GptSearch = () => {
   return (
     <div>
-      <div className="absolute inset-0 w-full h-full -z-10">
+      <div className="fixed inset-0 w-full h-full -z-10">
         <img
           src={HEADER_BG}
           alt="background"
